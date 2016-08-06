@@ -1,12 +1,10 @@
-var Sequelize = require('sequelize');
-var validator = require('validator'); // 验证
+const Sequelize = require('sequelize');
+const validator = require('validator'); // 验证
 
-var sequelize = require('./connect');
-var Work = require('./workModel');
+const sequelize = require('./connect');
+const Work = require('./workModel');
 
-
-
-var Vote = sequelize.define('vote', {
+const Vote = sequelize.define('vote', {
     work_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -21,28 +19,6 @@ var Vote = sequelize.define('vote', {
     }
 });
 
-
 Vote.sync();
 
 module.exports = Vote;
-
-// var id = Work.create({
-//     work_name: '演员',
-//     work_link: 'http://hongyan.cqupt.edu.cn',
-//     type: 'song',
-//     pic: 'hello.png',
-//     college: '通信',
-//     phone: 13237725597,
-// })
-//     .get('id')
-//     .then(function(id) {
-//         console.log(id);
-//     });
-
-
-
-
-
-
-
-

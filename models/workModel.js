@@ -1,14 +1,14 @@
-var Sequelize = require('sequelize');
-var validator = require('validator'); // 验证
+const Sequelize = require('sequelize');
+const validator = require('validator'); // 验证
 
-var sequelize = require('./connect');
+const sequelize = require('./connect');
 
-var info = require('../config/infos.json')
+const info = require('../config/infos.json')
 
 
 
-var collegeNames = info.colleges;
-var work_types = info.work_types;
+const collegeNames = info.colleges;
+const work_types = info.work_types;
 
 /**
  * work 表
@@ -20,7 +20,7 @@ var work_types = info.work_types;
  * email     作者 email
  * author    作者名字
  */
-var Work = sequelize.define('work', {
+const Work = sequelize.define('work', {
     work_name: {
         type: Sequelize.STRING,
         allowNull: false,
