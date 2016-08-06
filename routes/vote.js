@@ -1,7 +1,10 @@
-var express = require('express');
-var router = express.Router();
-var util = require('util');
-var Vote = require('../models/voteModel');
+'use strict';
+
+
+const express = require('express');
+const router = express.Router();
+const util = require('util');
+const Vote = require('../models/voteModel');
 
 
 // 数组去重
