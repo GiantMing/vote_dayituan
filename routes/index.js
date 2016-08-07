@@ -10,120 +10,96 @@ var Work = require('../models/workModel.js');
 var co = require('co');
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/', function (req, res) {
 
-    co(regeneratorRuntime.mark(function _callee() {
+    co(regeneratorRuntime.mark(function _callee3() {
         var workModels, works;
-        return regeneratorRuntime.wrap(function _callee$(_context) {
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
             while (1) {
-                switch (_context.prev = _context.next) {
+                switch (_context3.prev = _context3.next) {
                     case 0:
-                        _context.next = 2;
+                        _context3.next = 2;
                         return Work.findAll({
                             attributes: ['id', 'work_name', 'work_link', 'pic', 'type', 'author']
                         });
 
                     case 2:
-                        workModels = _context.sent;
+                        workModels = _context3.sent;
                         works = workModels.map(function (workModel) {
                             return workModel.get();
                         });
 
 
-                        works.forEach(function (work, workIndex) {});
+                        co(regeneratorRuntime.mark(function _callee2() {
+                            return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                                while (1) {
+                                    switch (_context2.prev = _context2.next) {
+                                        case 0:
+                                            works.forEach(function (work, workIndex) {
+                                                co(regeneratorRuntime.mark(function _callee() {
+                                                    var vote_nums, vote_num;
+                                                    return regeneratorRuntime.wrap(function _callee$(_context) {
+                                                        while (1) {
+                                                            switch (_context.prev = _context.next) {
+                                                                case 0:
+                                                                    _context.next = 2;
+                                                                    return Vote.findAll({
+                                                                        attributes: [[sequelize.fn('COUNT', sequelize.col('id')), 'vote_num']],
+                                                                        where: {
+                                                                            work_id: work.id
+                                                                        }
+                                                                    });
 
-                        res.send('hello world');
+                                                                case 2:
+                                                                    vote_nums = _context.sent;
+                                                                    vote_num = vote_nums.map(function (vote_num) {
+                                                                        return vote_num.get('vote_num');
+                                                                    })[0];
 
-                    case 6:
+                                                                    work.vote_num = vote_num;
+                                                                    return _context.abrupt('return', works);
+
+                                                                case 6:
+                                                                case 'end':
+                                                                    return _context.stop();
+                                                            }
+                                                        }
+                                                    }, _callee, this);
+                                                })).then(function (works) {
+                                                    var song_works = works.filter(function (work) {
+                                                        return work.type === 'song';
+                                                    });
+                                                    var preside_works = works.filter(function (work) {
+                                                        return work.type === 'preside';
+                                                    });
+                                                    // res.send(JSON.stringify(song_works));
+                                                    // res.redirect('/');
+                                                    res.render('index', {
+                                                        title: 'fuck promise',
+                                                        song_works: song_works,
+                                                        preside_works: song_works
+                                                    });
+                                                });
+                                            });
+
+                                        case 1:
+                                        case 'end':
+                                            return _context2.stop();
+                                    }
+                                }
+                            }, _callee2, this);
+                        }));
+
+                    case 5:
                     case 'end':
-                        return _context.stop();
+                        return _context3.stop();
                 }
             }
-        }, _callee, this);
+        }, _callee3, this);
     }));
-    // .then((workModels) => {
-    //     var works = workModels.map((workModel) => workModel.get());
-    //     res.render('index', {
-    //         title: 'fuck promise',
-    //         song_works: works
-    //     })
-    // });
-    // console.log(workModels);
-    // res.send('heloworld');
+    return function (err) {
+        return console.log(err);
+    };
 });
-// var info = [];
-// infos = workModels.map((work) => work.get());
-
-// infos.forEach( (info, infoIndex) => {
-//     Vote.findAll({
-//         attributes: [[sequelize.fn('COUNT', sequelize.col('id')), 'vote_num']],
-//         where: {
-//             work_id: info.id
-//         }
-//     })
-//     .then((vote_nums) => {
-//         vote_nums.forEach((vote_num, vote_num_index) => {
-//             infos[infoIndex].vote_num = vote_num.get('vote_num');
-//         });
-//         return infos
-//     })
-//     .then((infos) => {
-//         var song_works = infos.filter((info) => info.type === 'song');
-//         var preside_works = infos.filter((info) => info.type === 'preside');
-//         // console.log(song_works);
-//         // console.log(preside_works);
-//         return [song_works, preside_works];
-//     })
-//     .then((arr) =>  {
-//         var song_works = arr[0];
-//         var preside_works = arr[1];
-//         console.log(song_works);
-//         console.log(preside_works);
-//         // res.render('index', {
-//         //     title: "fuck vote",
-//         //     song_works: song_works,
-//         //     preside_works: preside_works
-//         // });
-//         // res.send('hello works.js');
-//     });
-// });
-
-// workModels.((work) => {
-
-//     var obj = work.get();
-//     console.log(typeof obj);
-//     // obj.forEach((item) => {
-//     //     console.log(item);
-//     // });
-
-//     // console.log(work.get('id'));
-// });
-// sequelize.query(`SELECT count(id) 
-//                 FROM vote`)
-
-
-// return workModels.map((work) =>{
-//     var info = work.get();
-//     info.vote_num = yield Vote.findAll({
-//         attributes: [
-//             [sequelize.fn('COUNT', sequelize.col('work_id')), 'work_id']
-//         ],
-//         where: {
-//             work_id: info.if
-//         }
-//     });
-//     return info;
-// })
-// .then((works) => {
-//     // console.log(works);
-//     // var song_works = works.filter((item) => item.type === 'song');
-//     // var preside_works = works.filter((item) => item.type === 'preside');
-//     // res.render('index',  { 
-//     //     title: 'Express', 
-//     //     song_works: song_works,
-//     //     preside_works:  preside_works
-//     // });
-// })
-// res.render('index', { title: 'Express' });
 
 module.exports = router;

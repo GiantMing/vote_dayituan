@@ -5,6 +5,8 @@ gulp.task('es6', () => {
     return gulp.src('routes_src/*.js')
         .pipe(babel({
             presets: ['es2015']
+        }).on('error', (err) => {
+            console.log(err);
         }))
         .pipe(gulp.dest('./routes/'));
 });
