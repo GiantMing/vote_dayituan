@@ -19,6 +19,6 @@ const Vote = sequelize.define('vote', {
     }
 });
 
-Vote.sync();
+// Vote.sync();
 
 module.exports = Vote;

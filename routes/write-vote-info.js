@@ -1,13 +1,12 @@
 'use strict'
 
 const sequelize = require('sequelize');
-const Vote = require('../models/voteModel.js');
-const Work  =require('../models/workModel.js');
-const fs = require('fs');
+const Vote      = require('../models/voteModel.js');
+const Work      = require('../models/workModel.js');
+const fs        = require('fs');
 
 
-
-module.exports = function() {
+function writeVoteInfo()  {
 
     // 查询作品的这些字段
     Work.findAll({
@@ -21,7 +20,6 @@ module.exports = function() {
         ]
     })
     .then((workModels) => {
-
 
         let works = workModels.map((workModel) => workModel.get()); // 获取作品内容信息
 
@@ -50,3 +48,6 @@ module.exports = function() {
         })
     })
 }
+
+
+module.exports = writeVoteInfo;

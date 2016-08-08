@@ -10,6 +10,8 @@ var index = require('./routes/index');
 var works = require('./routes/works');
 var vote  = require('./routes/vote');
 
+const session = require('express-session')
+
 var app = express();
 
 // view engine setup
@@ -22,6 +24,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({ secret: 'hello world', cookie: { maxAge: 60000 }}))
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 主页

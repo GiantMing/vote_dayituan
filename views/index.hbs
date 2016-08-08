@@ -1,181 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <title>{{title}}</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"> 
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
     <link rel="stylesheet" href="css/weui.min.css">
     <link rel="stylesheet" href="css/index.css">
-</head>
-<body>
-
+  </head>
+  <body>
     <div class="join_in">
-        <div class="weui_btn_area">
-            <a id="submit_btn" href="#" class="weui_btn weui_btn_primary">投票</a>
-        </div>
+      <div class="weui_btn_area">
+        <a id="submit_btn" href="#" class="weui_btn weui_btn_primary">投票</a>
+      </div>
     </div>
-
-
     <div class="container">
-        <div class="banner">
-            <img src="./img/banner.jpg" alt="banner">
-        </div>
-        <section class="explain">
-            <div class="weui_panel weui_panel_access">
-                <div class="weui_panel_bd">
-                    <div class="weui_media_box weui_media_text">
-                        
-                        <h4 class="weui_media_title">投票时间: </h4>
-                        <p class="weui_media_desc">4月14日00:00-4月15日24:00
-                        </p>
-                        
-                        <h4 class="weui_media_title">如何参与： </h4>
-                        <p class="weui_media_desc">1.手机下载“全民K歌”APP，并注册成为用户。<br>2.微信关注“重邮小帮手”公众号，关注后点击下方“线上互动”中的“十大线上初赛”即可参与
-                        </p>
-                        <h4 class="weui_media_title">比赛规则：</h4>
-                        <p class="weui_media_desc">进入页面后，点击 [ 试听 ] ，系统会跳转至“全民K歌”页面，对选手作品进行试听，完成后可给选手进行点赞。<br>点击 [ 我要参加 ] ，可填写报名信息，然后自行前往“全民K歌”进行歌曲录制，录制完成后点击“分享”，然后复制链接，在报名页面中粘贴链接即可上传。
-                        </p>
-                    </div>
-                </div>
+      <div class="banner">
+        <img src="./img/banner.jpg" alt="banner">
+      </div>
+      <section class="explain">
+        <div class="weui_panel weui_panel_access">
+          <div class="weui_panel_bd">
+            <div class="weui_media_box weui_media_text">
+              
+              <h4 class="weui_media_title">投票时间: </h4>
+              <p class="weui_media_desc">4月14日00:00-4月15日24:00</p>
+
+              <h4 class="weui_media_title">如何参与： </h4>
+              <p class="weui_media_desc">1.手机下载“全民K歌”APP，并注册成为用户。<br>2.微信关注“重邮小帮手”公众号，关注后点击下方“线上互动”中的“十大线上初赛”即可参与
+              </p>
+              <h4 class="weui_media_title">比赛规则：</h4>
+              <p class="weui_media_desc">进入页面后，点击 [ 试听 ] ，系统会跳转至“全民K歌”页面，对选手作品进行试听，完成后可给选手进行点赞。<br>点击 [ 我要参加 ] ，可填写报名信息，然后自行前往“全民K歌”进行歌曲录制，录制完成后点击“分享”，然后复制链接，在报名页面中粘贴链接即可上传。
+              </p>
             </div>
-        </section>
-
-        <section class="choose_wrap">
-          <div class="the_main">主持人</div>
-          <div class="person_button">群众</div>
-        </section>
-
-        <section class="song_list_wrap" id="wrap_1">
-
-
-                {{#each song_works}}
-                    <div class="song_list">
-                        <a id="song_link" href="{{work_link}}" class="weui_media_box weui_media_appmsg">
-                            <div class="weui_media_hd">
-                                <img id="singer_head" class="weui_media_appmsg_thumb" src="" alt="">
-                            </div>
-                            <div class="weui_media_bd">
-                                <h4 id="song_name" class="weui_media_title">{{work_name}}票数{{vote_num}}</h4>
-                                <p class="weui_media_desc singer">
-                                </p>
-                            </div>
-                        </a>
-                        <div class="weui_media_desc thumb_wrap">
-                            <i data-id= "{{id}}" data-vote-num{{vote_num}} data-belong='warp_1' class="iconfont thumb">&#x3443;</i>
-                            <span class="thumb_num"></span>
-                            <a href="" class="listen">试听</a>
-                        </div>
-                    </div>
-
-                {{/each}}
-
-
-
-                {{!-- <div class="song_list">
-                    <a id="song_link" href="##" class="weui_media_box weui_media_appmsg">
-                        <div class="weui_media_hd">
-                            <img id="singer_head" class="weui_media_appmsg_thumb" src="" alt="">
-                        </div>
-                        <div class="weui_media_bd">
-                            <h4 id="song_name" class="weui_media_title">tem.song_name%</h4>
-                            <p class="weui_media_desc singer">
-                            </p>
-                        </div>
-                    </a>
-                    <div class="weui_media_desc thumb_wrap">
-                        <i data-id= "2" data-belong='warp_1' class="iconfont thumb">&#x3443;</i>
-                        <span class="thumb_num"></span>
-                        <a href="" class="listen">试听</a>
-                    </div>
-                </div> --}}
-        </section>
-        <section class="song_list_wrap" id="wrap_2">
-                <div class="song_list">
-                    <a id="song_link" href="##" class="weui_media_box weui_media_appmsg">
-                        <div class="weui_media_hd">
-                            <img id="singer_head" class="weui_media_appmsg_thumb" src="" alt="">
-                        </div>
-                        <div class="weui_media_bd">
-                            <h4 id="song_name" class="weui_media_title">tem.song_name%</h4>
-                            <p class="weui_media_desc singer">
-                            </p>
-                        </div>
-                    </a>
-                    <div class="weui_media_desc thumb_wrap">
-                        <i data-id= "1" data-belong='warp_2' class="iconfont thumb">&#x3443;</i>
-                        <span class="thumb_num"></span>
-                        <a href="" class="listen">试听</a>
-                    </div>
-                </div>
-        </section>
+          </div>
+        </div>
+      </section>
+      <section class="choose_wrap">
+        <div class="the_main">主持人</div>
+        <div class="person_button">群众</div>
+      </section>
+      <section class="song_list_wrap" id="wrap_1">
+        {{#each song_works}}
+        <div class="song_list">
+          <a id="song_link" href="{{work_link}}" class="weui_media_box weui_media_appmsg">
+            <div class="weui_media_hd">
+              <img id="singer_head" class="weui_media_appmsg_thumb" src="" alt="">
+            </div>
+            <div class="weui_media_bd">
+              <h4 id="song_name" class="weui_media_title">{{work_name}}票数{{vote_num}}</h4>
+              <p class="weui_media_desc singer">
+              </p>
+            </div>
+          </a>
+          <div class="weui_media_desc thumb_wrap">
+            <i data-id= "{{id}}" data-vote-num{{vote_num}} data-belong='warp_1' class="iconfont thumb">&#x3443;</i>
+            <span class="thumb_num"></span>
+            <a href="" class="listen">试听</a>
+          </div>
+        </div>
+        {{/each}}
+        {{!-- <div class="song_list">
+          <a id="song_link" href="##" class="weui_media_box weui_media_appmsg">
+            <div class="weui_media_hd">
+              <img id="singer_head" class="weui_media_appmsg_thumb" src="" alt="">
+            </div>
+            <div class="weui_media_bd">
+              <h4 id="song_name" class="weui_media_title">tem.song_name%</h4>
+              <p class="weui_media_desc singer">
+              </p>
+            </div>
+          </a>
+          <div class="weui_media_desc thumb_wrap">
+            <i data-id= "2" data-belong='warp_1' class="iconfont thumb">&#x3443;</i>
+            <span class="thumb_num"></span>
+            <a href="" class="listen">试听</a>
+          </div>
+        </div> --}}
+      </section>
+      <section class="song_list_wrap" id="wrap_2">
+        {{#each preside_works}}
+        <div class="song_list">
+          <a id="song_link" href="{{work_link}}" class="weui_media_box weui_media_appmsg">
+            <div class="weui_media_hd">
+              <img id="singer_head" class="weui_media_appmsg_thumb" src="" alt="">
+            </div>
+            <div class="weui_media_bd">
+              <h4 id="song_name" class="weui_media_title">{{work_name}}票数{{vote_num}}</h4>
+              <p class="weui_media_desc singer">
+              </p>
+            </div>
+          </a>
+          <div class="weui_media_desc thumb_wrap">
+            <i data-id= "{{id}}" data-vote-num{{vote_num}} data-belong='warp_1' class="iconfont thumb">&#x3443;</i>
+            <span class="thumb_num"></span>
+            <a href="" class="listen">试听</a>
+          </div>
+        </div>
+        {{/each}}
+        {{!-- <div class="song_list">
+          <a id="song_link" href="##" class="weui_media_box weui_media_appmsg">
+            <div class="weui_media_hd">
+              <img id="singer_head" class="weui_media_appmsg_thumb" src="" alt="">
+            </div>
+            <div class="weui_media_bd">
+              <h4 id="song_name" class="weui_media_title">tem.song_name%</h4>
+              <p class="weui_media_desc singer">
+              </p>
+            </div>
+          </a>
+          <div class="weui_media_desc thumb_wrap">
+            <i data-id= "1" data-belong='warp_2' class="iconfont thumb">&#x3443;</i>
+            <span class="thumb_num"></span>
+            <a href="" class="listen">试听</a>
+          </div>
+        </div> --}}
+      </section>
     </div>
-
-
-
-    <footer>© 红岩网校工作站</footer>
-    <script src="http://a.alipayobjects.com/??amui/zepto/1.1.3/zepto.js,static/fastclick/1.0.6/fastclick.min.js"></script>
-    <script>FastClick.attach(document.body);</script>
-    <script src="./js/index.js?timer=<%=new Date().getTime()%>"></script>
-    <script src="//res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-    <script>
-       var TITLE = '校园十大歌手线上评比';
-       var DESC = '十大歌手线上评比开始啦!快来K歌';
-       var LINK = 'http://hongyan.cqupt.edu.cn/vote_ten_singer/index/index';
-       var IMGURL = 'https://dn-redrock.qbox.me/cyxbs_logo.jpg';
-       wx.ready(function () {
-            wx.onMenuShareTimeline({
-                   title: TITLE,
-                   link: LINK, 
-                   imgUrl: IMGURL,
-                   success: function () {
-                   },
-                   cancel: function () {
-                   }
-               });
-               wx.onMenuShareAppMessage({
-                   title: TITLE,
-                   desc: DESC,
-                   link: LINK,
-                   imgUrl: IMGURL,
-                   type: '',
-                   success: function () {
-                   },
-                   cancel: function () {
-                   }
-               });
-               wx.onMenuShareQQ({
-                   title: TITLE,
-                   desc: DESC,
-                   link: LINK,
-                   imgUrl: IMGURL,
-                   success: function () {
-                   },
-                   cancel: function () {
-                   }
-               });
-               wx.onMenuShareWeibo({
-                   title: TITLE,
-                   desc: DESC,
-                   link: LINK,
-                   imgUrl: IMGURL,
-                   success: function () {
-                   },
-                   cancel: function () {
-                   }
-               });
-               wx.onMenuShareQZone({
-                   title: TITLE,
-                   desc: DESC,
-                   link: LINK,
-                   imgUrl: IMGURL,
-                   success: function () {
-                   },
-                   cancel: function () {
-                   }
-               });
-       });
-       wx.error(function(res){
-       });
-       </script>
+  <footer>© 红岩网校工作站</footer>
+  <script src="http://a.alipayobjects.com/??amui/zepto/1.1.3/zepto.js,static/fastclick/1.0.6/fastclick.min.js"></script>
+  <script>FastClick.attach(document.body);</script>
+  <script src="./js/index.js?timer=<%=new Date().getTime()%>"></script>
+  <script src="//res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+  <script>
+  var TITLE = '校园十大歌手线上评比';
+  var DESC = '十大歌手线上评比开始啦!快来K歌';
+  var LINK = 'http://hongyan.cqupt.edu.cn/vote_ten_singer/index/index';
+  var IMGURL = 'https://dn-redrock.qbox.me/cyxbs_logo.jpg';
+  wx.ready(function () {
+  wx.onMenuShareTimeline({
+    title: TITLE,
+    link: LINK,
+    imgUrl: IMGURL,
+    success: function () {
+    },
+    cancel: function () {
+    }
+  });
+  wx.onMenuShareAppMessage({
+    title: TITLE,
+    desc: DESC,
+    link: LINK,
+    imgUrl: IMGURL,
+    type: '',
+    success: function () {
+    },
+    cancel: function () {
+    }
+  });
+  wx.onMenuShareQQ({
+    title: TITLE,
+    desc: DESC,
+    link: LINK,
+    imgUrl: IMGURL,
+    success: function () {
+    },
+    cancel: function () {
+    }
+  });
+  wx.onMenuShareWeibo({
+    title: TITLE,
+    desc: DESC,
+    link: LINK,
+    imgUrl: IMGURL,
+    success: function () {
+    },
+    cancel: function () {
+    }
+  });
+  wx.onMenuShareQZone({
+    title: TITLE,
+    desc: DESC,
+    link: LINK,
+    imgUrl: IMGURL,
+    success: function () {
+    },
+    cancel: function () {
+    }
+  });
+  });
+  wx.error(function(res){
+  });
+  </script>
 </body>
 </html>

@@ -64,6 +64,6 @@ const Work = sequelize.define('work', {
     },
 });
 
-Work.sync();//{focus: true});
+// Work.sync();//{focus: true});
 
 module.exports = Work;

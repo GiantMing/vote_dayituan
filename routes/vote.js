@@ -1,10 +1,10 @@
 'use strict';
 
 
-const express = require('express');
-const router = express.Router();
-const util = require('util');
-const Vote = require('../models/voteModel');
+const express       = require('express');
+const router        = express.Router();
+const util          = require('util');
+const Vote          = require('../models/voteModel');
 const writeVoteInfo = require('./write-vote-info.js');
 
 // 数组去重
@@ -20,7 +20,7 @@ function unique(array){
 // 接收投票
 router.post('/', function(req, res, next) {
     var work_ids = req.body.work_ids;
-    var openid = req.body.openid;
+    var openid = req.session.openid;
     var type = req.body.type;
 
     if(work_ids) work_ids = JSON.parse(work_ids);
