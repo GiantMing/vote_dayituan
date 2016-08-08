@@ -26,8 +26,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // 主页
 app.use('/', index);
-// app.use('/users', users);
-// 
 
 // 作品 POST 路由
 app.use('/works', works);

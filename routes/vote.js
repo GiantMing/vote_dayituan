@@ -5,7 +5,7 @@ const express = require('express');
 const router = express.Router();
 const util = require('util');
 const Vote = require('../models/voteModel');
-
+const writeVoteInfo = require('./write-vote-info.js');
 
 // 数组去重
 function unique(array){
@@ -61,7 +61,6 @@ router.post('/', function(req, res, next) {
             })
             .then(function(vote) {
                 if(vote) {
-                    console.log('*************************************');
                     response_info = {
                         status: 403,
                         msg: 'vote already'
@@ -76,6 +75,7 @@ router.post('/', function(req, res, next) {
                         }
                     });
                     Vote.bulkCreate(vote_datas);
+                    writeVoteInfo();
                 }
                 res.send(JSON.stringify(response_info));
             });

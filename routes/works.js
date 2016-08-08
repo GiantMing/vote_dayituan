@@ -57,7 +57,6 @@ router.post('/', function(req, res, next) {
         WorkModel.create(work_info); // 插入数据库
     };
     res.send(JSON.stringify(response_info));
-    res.end();
 });
 
 module.exports = router;
