@@ -25,9 +25,18 @@ data = require('./data.json');
 
 
 router.get('/', (req, res, next) => {
-
-    if(req.query.code) {
-
+    let code = req.query.code
+    // code = req.query.code = '031CgdHr1GUALs0G98Er1MNbHr1CgdHo'
+    if(code) {
+        console.log('helfjksldjf');
+        getOpenID(req, res)
+        .then((data) => {
+            console.log(data);
+            next();
+        })
+        .catch((err) => {
+            console.log(err);
+        })
     } else {
         getCode(req, res);
     }

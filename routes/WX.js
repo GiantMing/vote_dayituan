@@ -6,113 +6,93 @@ const crypto = require('crypto');
 
 
 
-// function hash (str, type) {
-//     let hashObj = crypto.createHash(type);
-//     hashObj.update(str);
-//     return hashObj.digest('hex');
-// }
-
-// function randomRange(min, max) {
-//     if(max == null) {
-//         max = min;
-//         min = 0;
-//     }
-//     return min + Math.floor(Math.random() * (max - min +1));
-// }
-
-// function randomString() {
-//     let sStr = 'abcdefghijklmnopqistuvwxyz0123456789ABCDEFGHIGKLMNOPQISTUVWXYZ';
-//     let rStr = '';
-//     for (let i = 0; i < 16; i++) {
-//       rStr += sStr[randomRange(61)];
-//     }
-//     return rStr;
-// }
-
-// function getData (openid, code) {
-//   const token = 'gh_68f0a1ffc303';
-//   const timeStamp = Math.floor(new Date().getTime()).toString();
-//   const str = randomString();
-//   const secret = hash(hash(timeStamp, 'sha1') + hash(str, 'md5') + 'redrock', 'sha1');
-//   const data = {
-//       "timestamp": timeStamp,
-//       "string": str,
-//       "secret": secret,
-//       "token": token,
-//   };
-//   if (code) {
-//     data.code = code;
-//   } else if (openid) {
-//     data.openid = openid;
-//   }
-//   return data;
-// }
-
-
-// function requestPost (url,data) {
-//   return new Promise(function (resolve, reject) {
-//     request.post(url, {form: data}, function (err, res, body) {
-//       if (err) {
-//         reject(err);
-//       } else {
-//         try {
-//           resolve(JSON.parse(body));
-//         } catch (e) {
-//           reject(e)
-//         }
-//       }
-//     })
-//   });
-// }
-
-function getOpenID(req, res) {
-  
-
-
-    // return new Promise(function (resolve, reject) {
-
-    //     const REDIRECT_URI = encodeURIComponent(req.protocol +  ':' + '//' + req.hostname + originalUrl).toLowerCase();
-    //     const APPID = 'wx81a4a4b77ec98ff4';
-    //     const LOCATION = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${APPID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=snsapi_userinfo&state=fuckweixin#wechat_redirect`;
-  
-
-    //     if(code) {
-    //       const DATA = getData(null, code);
-    //       try {
-    //           requestPost(url, DATA)
-    //           .then((res_info) => {
-    //               let openid = res_info.data.openid;
-    //               resolve(openid);
-    //           })
-    //       } catch(e) {
-    //         reject(e);      
-    //       }
-    //     } else {
-    //       res.writeHead(307, {'Location': LOCATION});
-    //       res.end();
-    //     }
-    // })
+function hash (str, type) {
+    let hashObj = crypto.createHash(type);
+    hashObj.update(str);
+    return hashObj.digest('hex');
 }
 
+function randomRange(min, max) {
+    if(max == null) {
+        max = min;
+        min = 0;
+    }
+    return min + Math.floor(Math.random() * (max - min +1));
+}
+
+function randomString() {
+    let sStr = 'abcdefghijklmnopqistuvwxyz0123456789ABCDEFGHIGKLMNOPQISTUVWXYZ';
+    let rStr = '';
+    for (let i = 0; i < 16; i++) {
+        rStr += sStr[randomRange(61)];
+    }
+    return rStr;
+}
+
+function getData (openid, code) {
+    const token = 'gh_68f0a1ffc303';
+    const timeStamp = Math.floor(new Date().getTime()).toString();
+    const str = randomString();
+    const secret = hash(hash(timeStamp, 'sha1') + hash(str, 'md5') + 'redrock', 'sha1');
+    const data = {
+        "timestamp": timeStamp,
+        "string": str,
+        "secret": secret,
+        "token": token,
+    };
+    if (code) {
+        data.code = code;
+    } else if (openid) {
+        data.openid = openid;
+    }
+    return data;
+}
+
+
+function requestPost (url,data) {
+  return new Promise(function (resolve, reject) {
+    request.post(url, {form: data}, function (err, res, body) {
+      if (err) {
+        reject(err);
+      } else {
+        try {
+          resolve(body);
+        } catch (e) {
+          reject(e)
+        }
+      }
+    })
+  });
+}
+
+function getOpenID(req, res) {
+    const code = req.query.code;
+    const URL = 'http://hongyan.cqupt.edu.cn/MagicLoop/index.php?s=/addon/Api/Api/webOauth'
+    const DATA = getData(null, code);
+    console.log(DATA);
+    return new Promise(function(resolve, reject) {
+        requestPost(URL, DATA)
+        .then((resInfo) => {
+            resolve(resInfo);
+        })
+        .catch((err) => {
+            reject(err);
+        })
+    })
+}
+
+// 获取code
 function getCode(req, res) {
-    // const REDIRECT_URI = encodeURIComponent(req.protocol+'s:'+'//'+req.hostname+req.originalUrl);
-    const REDIRECT_URI = encodeURIComponent('redrock.cqupt.edu.cn/vote_dayituan_2016');
-    console.log(REDIRECT_URI);
+    const REDIRECT_URI = encodeURIComponent('http://' + req.hostname+req.originalUrl);
     const APPID = 'wx81a4a4b77ec98ff4';
-    const LOCATION = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${APPID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=snsapi_userinfo&state=fuckweixin#wechat_redirect`;
+    const LOCATION = `http://hongyan.cqupt.edu.cn/GetWeixinCode/get-weixin-code.html?appid=${APPID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=snsapi_userinfo&state=fuckweixin#wechat_redirect`;
     res.writeHead(307, {'Location': LOCATION});
     res.end();
 }
 
 
 function getJSSDK(req, res) {
-    // return new Promise(function(resolve, reject) {
-    //     const URL = 'http://hongyan.cqupt.edu.cn/MagicLoop/index.php?s=/addon/Api/Api/apiJsTicket';
-    //     const DATA = getData();
-
-    //     let RES_INF;
-
-    // });
+    
 }
 
 
