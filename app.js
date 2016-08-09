@@ -12,6 +12,8 @@ var vote  = require('./routes/vote');
 
 const session = require('express-session')
 
+
+
 var app = express();
 
 // view engine setup
@@ -26,6 +28,7 @@ app.use(session({ secret: 'hello world', cookie: { maxAge: 60000 }}))
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 主页
+
 app.use('/', index);
 
 // 作品 POST 路由
@@ -63,5 +66,6 @@ app.use(function(err, req, res, next) {
   });
 });
 
-
-module.exports = app;
+var vote_dayituan_2016 = express();
+vote_dayituan_2016.use('/vote_dayituan_2016', app);
+module.exports = vote_dayituan_2016;
