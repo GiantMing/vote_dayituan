@@ -71,15 +71,10 @@ function getOpenID(req, res) {
 
     return new Promise(function (resolve, reject) {
 
-        let redirect_uri = req.protocol +  ':' + '//' + req.hostname + req.url
-        redirect_uri = encodeURIComponent(redirect_uri).toLowerCase();
-        console.log(redirect_uri);
+        const REDIRECT_URI = encodeURIComponent(req.protocol +  ':' + '//' + req.hostname + originalUrl).toLowerCase();
         const APPID = 'wx81a4a4b77ec98ff4';
-        const URL = 'http://hongyan.cqupt.edu.cn/MagicLoop/index.php?s=/addon/Api/Api/webOauth';
-        const LOCATION = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${APPID}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=sfasdfasdfefvee#wechat_redirect`;
-        
-        console.log(`req.query: \n ${req.query}`);
-        let code = req.query.code;
+        const LOCATION = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${APPID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=snsapi_userinfo&state=fuckweixin#wechat_redirect`;
+  
 
         if(code) {
           const DATA = getData(null, code);
@@ -99,6 +94,14 @@ function getOpenID(req, res) {
     })
 }
 
+function getCode(req, res) {
+    const REDIRECT_URI = encodeURIComponent(req.protocol+':'+'//'+req.hostname+req.originalUrl).toLowerCase();
+    const APPID = 'wx81a4a4b77ec98ff4';
+    const LOCATION = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${APPID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=snsapi_userinfo&state=fuckweixin#wechat_redirect`;
+    res.writeHead(307, {'Location': LOCATION});
+    res.end();
+}
+
 
 function getJSSDK(req, res) {
     return new Promise(function(resolve, reject) {
@@ -116,5 +119,6 @@ function getJSSDK(req, res) {
 
 module.exports = {
     getOpenID: getOpenID,
-    getJSSDK: getJSSDK
+    getJSSDK: getJSSDK,
+    getCode: getCode,
 }

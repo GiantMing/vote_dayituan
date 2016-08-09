@@ -16,7 +16,7 @@ const WX = require('./WX.js');
 
 const getOpenID  = WX.getOpenID;
 const getJSSDK   = WX.getJSSDK;
-
+const getCode    = WX.getCode;
 
 let data = {};
 if(!fs.existsSync('./routes/data.json')) writeVoteInfo(); 
@@ -25,21 +25,11 @@ data = require('./data.json');
 
 
 router.get('/', (req, res, next) => {
-    let openid = req.session.openid;
-    console.log(`req.query: \n ${req.query}`);
-    if(!openid) {
-        getOpenID(req, res)
-        .then((openid) => {
-            // console.log(openid);
-            return req.session.openid = openid;
-        })
-        .then((openid) => {
-            getJSSDK(req, res)
-            .then((JSSDK) => {
-                req.JSSDK = JSSDK;
-                next();
-            });
-        });
+    console.log(req.query.code);
+    if(req.query.code) {
+
+    } else {
+        getCode(req, res);
     }
 });
 
