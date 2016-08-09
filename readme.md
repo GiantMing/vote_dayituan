@@ -2,7 +2,7 @@
 
 ```shell
 
-DEBUG=myapp:* npm start
+PORT=10086 DEBUG=myapp:* npm start
 
 ```
 

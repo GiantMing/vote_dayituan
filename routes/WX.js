@@ -67,7 +67,10 @@ function requestPost (url,data) {
 
 function getOpenID(req, res) {
     return new Promise(function (resolve, reject) {
-        let redirect_uri = encodeURIComponent('http://hongyan.cqupt.edu.cn' + req.url);
+        let redirect_uri = req.protocol +  ':' + '//' + req.hostname + req.originalUrl
+        console.log(redirect_uri);
+        redirect_uri = encodeURIComponent(redirect_uri);
+        
         const APPID = 'wx81a4a4b77ec98ff4';
         const URL = 'http://hongyan.cqupt.edu.cn/MagicLoop/index.php?s=/addon/Api/Api/webOauth';
         const LOCATION = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${APPID}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=sfasdfasdfefvee#wechat_redirect`;
