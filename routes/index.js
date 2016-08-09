@@ -26,21 +26,20 @@ data = require('./data.json');
 
 router.get('/', (req, res, next) => {
     let openid = req.session.openid;
-    console.log(`openid: ${openid}`);
-    console.log('query: req.query');
+    console.log(`req.query: \n ${req.query}`);
     if(!openid) {
         getOpenID(req, res)
         .then((openid) => {
-            console.log(openid);
+            // console.log(openid);
             return req.session.openid = openid;
         })
-        // .then((openid) => {
-        //     getJSSDK(req, res)
-        //     .then((JSSDK) => {
-        //         req.JSSDK = JSSDK;
-        //         next();
-        //     });
-        // });
+        .then((openid) => {
+            getJSSDK(req, res)
+            .then((JSSDK) => {
+                req.JSSDK = JSSDK;
+                next();
+            });
+        });
     }
 });
 
