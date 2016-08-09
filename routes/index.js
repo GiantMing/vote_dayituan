@@ -25,7 +25,7 @@ data = require('./data.json');
 
 
 router.get('/', (req, res, next) => {
-    console.log(req.query.code);
+
     if(req.query.code) {
 
     } else {
