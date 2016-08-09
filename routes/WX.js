@@ -95,7 +95,8 @@ function getOpenID(req, res) {
 }
 
 function getCode(req, res) {
-    const REDIRECT_URI = encodeURIComponent(req.protocol+':'+'//'+req.hostname+req.originalUrl).toLowerCase();
+    const REDIRECT_URI = encodeURIComponent(req.protocol+':'+'//'+req.hostname+req.originalUrl);
+    console.log(REDIRECT_URI);
     const APPID = 'wx81a4a4b77ec98ff4';
     const LOCATION = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${APPID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=snsapi_userinfo&state=fuckweixin#wechat_redirect`;
     res.writeHead(307, {'Location': LOCATION});
