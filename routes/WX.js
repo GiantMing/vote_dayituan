@@ -69,7 +69,7 @@ function getOpenID(req, res) {
     return new Promise(function (resolve, reject) {
         let redirect_uri = req.protocol +  ':' + '//' + req.hostname + req.originalUrl
         console.log(redirect_uri);
-        redirect_uri = encodeURIComponent(redirect_uri);
+        redirect_uri = encodeURIComponent(redirect_uri).toLowerCase();
         
         const APPID = 'wx81a4a4b77ec98ff4';
         const URL = 'http://hongyan.cqupt.edu.cn/MagicLoop/index.php?s=/addon/Api/Api/webOauth';

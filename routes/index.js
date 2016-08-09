@@ -26,8 +26,9 @@ data = require('./data.json');
 
 router.get('/', (req, res, next) => {
     let openid = req.session.openid;
+    console.log(`openid: ${openid}`);
+    console.log('query: req.query');
     if(!openid) {
-
         getOpenID(req, res)
         .then((openid) => {
             console.log(openid);
