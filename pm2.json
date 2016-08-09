@@ -1,0 +1,17 @@
+{
+  "apps": [{
+    "name": "大艺团投票,冯秋明",
+    "script": "./bin/www",
+    "cwd": "/root/vote_dayituan_2016",
+    "exec_mode": "cluster",
+    "instances": 1,
+    "max_memory_restart": "500M",
+    "autorestart": true,
+    "node_args": ["--harmony"],
+    "args": [],
+    "env": {
+        "NODE_ENV": "production",
+        "PORT": "10086"
+    }
+  }]
+}
