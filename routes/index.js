@@ -12,7 +12,10 @@ const crypto = require('crypto');
 const fetch = require('node-fetch');
 
 
-const getOpenId = require('get_open_id.js');
+const WX = require('./WX.js');
+
+const getOpenID  = WX.getOpenID;
+const getJSSDK   = WX.getJSSDK;
 
 
 let data = {};
@@ -24,18 +27,25 @@ data = require('./data.json');
 router.get('/', (req, res, next) => {
     let openid = req.session.openid;
     if(!openid) {
-        getOpenid(req, res)
+        getOpenID(req, res)
         .then((openid) => {
-            req.session.openid = openid;
+            return req.session.openid = openid;
         })
+        .then((openid) => {
+            getJSSDK(req, res)
+            .then((JSSDK) => {
+                req.JSSDK = JSSDK;
+                next();
+            });
+        });
     }
 });
 
 
 
 router.get('/', (req, res, next) => {
-    
     res.render('index', {
+        JSSDK: req.JSSDK,
         song_works: data.song_works,
         preside_works: data.preside_works
     });

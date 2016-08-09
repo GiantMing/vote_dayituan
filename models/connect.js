@@ -1,7 +1,11 @@
 var Sequelize = require('sequelize');
 const CONFIG = require('../config/config');
 
-var sequelize = new Sequelize(CONFIG.database, CONFIG.username, CONFIG.password);
+var sequelize = new Sequelize(CONFIG.database, CONFIG.username, CONFIG.password, {
+    host: CONFIG.host || 'localhost',
+    dialect: CONFIG.dialect || 'mysql',
+    port: CONFIG.port || 3306
+});
 
 sequelize
     .authenticate()
