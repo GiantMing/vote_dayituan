@@ -1,22 +1,16 @@
 'use strict';
 // require('babel-polyfill');
 const express       = require('express');
-const router        = express.Router();
 const fs            = require('fs');
+const session       = require('express-session')
 const writeVoteInfo = require('./write-vote-info.js');
-// const request       = require('request');
-const session = require('express-session')
+const WX            = require('./WX.js');
 
-const request =require('request');
-const crypto = require('crypto');
-const fetch = require('node-fetch');
+const router        = express.Router();
 
-
-const WX = require('./WX.js');
-
-const getOpenid  = WX.getOpenid;
-const getJSSDK   = WX.getJSSDK;
-const getCode    = WX.getCode;
+const getOpenid     = WX.getOpenid;
+const getJSSDK      = WX.getJSSDK;
+const getCode       = WX.getCode;
 
 let data = {};
 if(!fs.existsSync('./routes/data.json')) writeVoteInfo(); 
@@ -27,8 +21,6 @@ data = require('./data.json');
 router.get('/', (req, res, next) => {
     let code = req.query.code;
     let openid = req.session.openid;
-    console.log('******************************************************');
-    console.log(openid);
     if(code) {
         if(!openid) {
             getOpenid(code)
@@ -37,11 +29,15 @@ router.get('/', (req, res, next) => {
                     body = JSON.parse(body);
                     let openid = body.data.openid;
                     req.session.openid = openid;
-                    console.log(openid);
+                    WX.getTicket()
+                    .then(data=> {
+                        console.log(data);
+                        next();
+                    })
                 } catch (e) {
                     console.log(e);
                 }
-                next();
+                
             })
             .catch((err) => {
                 console.log(err);
@@ -49,13 +45,10 @@ router.get('/', (req, res, next) => {
         } else {
             next();
         }
-        
     } else {
         getCode(req, res);
     }
 });
-
-
 
 router.get('/', (req, res, next) => {
     res.render('index', {

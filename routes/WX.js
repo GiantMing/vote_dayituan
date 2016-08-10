@@ -16,7 +16,7 @@ function hash (type) {
 const md5 = hash('md5');
 const sha1 = hash('sha1');
 
-
+// 随机数范围
 function randomRange(min, max) {
     if(max == null) {
         max = min;
@@ -25,10 +25,11 @@ function randomRange(min, max) {
     return min + Math.floor(Math.random() * (max - min +1));
 }
 
-function randomString() {
+// 随机字符串
+function randomString(n) {
     let sStr = 'abcdefghijklmnopqistuvwxyz0123456789ABCDEFGHIGKLMNOPQISTUVWXYZ';
     let rStr = '';
-    for (let i = 0; i < 16; i++) {
+    for (let i = 0; i < n; i++) {
         rStr += sStr[randomRange(61)];
     }
     return rStr;
@@ -38,7 +39,7 @@ function randomString() {
 
 // 生成post参数
 function paramsGenerator (openid, code) {
-    const str = randomString()
+    const str = randomString(16)
     const timeStamp = (new Date().getTime()).toString();
     const secret = sha1(sha1(timeStamp) + md5(str) + 'redrock');
     const data = {
@@ -53,65 +54,58 @@ function paramsGenerator (openid, code) {
     return data;
 }
 
-function getOpenid(code) {
-    const URL = 'http://hongyan.cqupt.edu.cn/MagicLoop/index.php?s=/addon/Api/Api/webOauth'
-    let data = paramsGenerator(void(0), code);
-    return new Promise(function(resolve, reject) {
-        request.post(URL, {form: data}, function(err, res, body) {
-            if(err) {
-                reject(err);
-            } else {
-                resolve(body);
-            }
+
+
+let WX = {
+    getOpenid: function(code) {
+        const URL = 'http://hongyan.cqupt.edu.cn/MagicLoop/index.php?s=/addon/Api/Api/webOauth'
+        let data = paramsGenerator(void(0), code);
+        return new Promise(function(resolve, reject) {
+            request.post(URL, {form: data}, function(err, res, body) {
+                if(err) {
+                    reject(err);
+                } else {
+                    resolve(body);
+                }
+            });
         });
-        // requestPost(URL, DATA)
-        // .then((resInfo) => {
-        //     resolve(resInfo);
-        // })
-        // .catch((err) => {
-        //     reject(err);
-        // })
-    });
-}
+    },
 
+    // 获取code
+    getCode: function(req, res) {
+        const REDIRECT_URI = encodeURIComponent('http://' + req.hostname+req.originalUrl);
+        const APPID = 'wx81a4a4b77ec98ff4';
+        const LOCATION = `http://hongyan.cqupt.edu.cn/GetWeixinCode/get-weixin-code.html?appid=${APPID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=snsapi_userinfo&state=fuckweixin#wechat_redirect`;
+        res.writeHead(307, {'Location': LOCATION});
+        res.end();
+    },
 
-// function getOpenID(code) {
-//     const APPID = 'wx81a4a4b77ec98ff4';
-//     const SECRET = '872a908ec98bd92f8db811eba2a83236';
-//     const URL = `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${APPID}&secret=${SECRET}&code=${code}&grant_type=authorization_code`
-//     // const DATA = getData(null, code);
-//     // console.log(DATA);
-//     return new Promise(function(resolve, reject) {
-//         requestPost(URL)
-//         .then((resInfo) => {
-//             resolve(resInfo);
-//         })
-//         .catch((err) => {
-//             reject(err);
-//         })
-//     })
-// }
-
-// 获取code
-function getCode(req, res) {
-    const REDIRECT_URI = encodeURIComponent('http://' + req.hostname+req.originalUrl);
-    const APPID = 'wx81a4a4b77ec98ff4';
-    const LOCATION = `http://hongyan.cqupt.edu.cn/GetWeixinCode/get-weixin-code.html?appid=${APPID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=snsapi_userinfo&state=fuckweixin#wechat_redirect`;
-    res.writeHead(307, {'Location': LOCATION});
-    res.end();
-}
-
-
-function getJSSDK(req, res) {
-    
+    // 获取Ticket
+    getTicket: function (req, res) {
+        const URL = "http://hongyan.cqupt.edu.cn/MagicLoop/index.php?s=/addon/Api/Api/apiJsTicket";
+        const data = paramsGenerator();
+        return new Promise(function(resolve, reject) {
+            request.post(URL, {form: data}, function (err, res, body) {
+                if(err) {
+                    reject(err);
+                } else {
+                    data.body = body;
+                    resolve(data);
+                }
+            })
+        });
+    },
+    JSSDKSignature: function(req) {
+        return new Promise((resolve, reject) => {
+            this.getTicket()
+            .then(resolve)
+            .catch(reject)
+        })
+        
+    }
+    // 
 }
 
 
 
-
-
-module.exports = {
-    getOpenid: getOpenid,
-    getJSSDK: getJSSDK,
-    getCode: getCode,
-}
+module.exports = WX;
