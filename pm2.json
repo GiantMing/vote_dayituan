@@ -1,6 +1,6 @@
 {
   "apps": [{
-    "name": "大艺团投票,冯秋明",
+    "name": "vote_dayituan_fqm",
     "script": "./bin/www",
     "cwd": "/root/vote_dayituan_2016",
     "exec_mode": "cluster",
