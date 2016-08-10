@@ -14,7 +14,7 @@ const fetch = require('node-fetch');
 
 const WX = require('./WX.js');
 
-const getOpenID  = WX.getOpenID;
+const getOpenid  = WX.getOpenid;
 const getJSSDK   = WX.getJSSDK;
 const getCode    = WX.getCode;
 
@@ -25,18 +25,31 @@ data = require('./data.json');
 
 
 router.get('/', (req, res, next) => {
-    let code = req.query.code
-    // code = req.query.code = '031CgdHr1GUALs0G98Er1MNbHr1CgdHo'
+    let code = req.query.code;
+    let openid = req.session.openid;
+    console.log('******************************************************');
+    console.log(openid);
     if(code) {
-        console.log('helfjksldjf');
-        getOpenID(req, res)
-        .then((data) => {
-            console.log(data);
+        if(!openid) {
+            getOpenid(code)
+            .then((body) => {
+                try {
+                    body = JSON.parse(body);
+                    let openid = body.data.openid;
+                    req.session.openid = openid;
+                    console.log(openid);
+                } catch (e) {
+                    console.log(e);
+                }
+                next();
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+        } else {
             next();
-        })
-        .catch((err) => {
-            console.log(err);
-        })
+        }
+        
     } else {
         getCode(req, res);
     }
@@ -48,7 +61,8 @@ router.get('/', (req, res, next) => {
     res.render('index', {
         JSSDK: req.JSSDK,
         song_works: data.song_works,
-        preside_works: data.preside_works
+        preside_works: data.preside_works,
+        time: (new Date()).getTime().toString()
     });
 });
 

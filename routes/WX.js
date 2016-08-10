@@ -5,12 +5,17 @@ const crypto = require('crypto');
 
 
 
-
-function hash (str, type) {
-    let hashObj = crypto.createHash(type);
-    hashObj.update(str);
-    return hashObj.digest('hex');
+function hash (type) {
+    return (str) => {
+        let hashObj = crypto.createHash(type);
+        hashObj.update(str);
+        return hashObj.digest('hex');
+    }
 }
+
+const md5 = hash('md5');
+const sha1 = hash('sha1');
+
 
 function randomRange(min, max) {
     if(max == null) {
@@ -29,57 +34,63 @@ function randomString() {
     return rStr;
 }
 
-function getData (openid, code) {
-    const token = 'gh_68f0a1ffc303';
-    const timeStamp = Math.floor(new Date().getTime()).toString();
-    const str = randomString();
-    const secret = hash(hash(timeStamp, 'sha1') + hash(str, 'md5') + 'redrock', 'sha1');
+
+
+// 生成post参数
+function paramsGenerator (openid, code) {
+    const str = randomString()
+    const timeStamp = (new Date().getTime()).toString();
+    const secret = sha1(sha1(timeStamp) + md5(str) + 'redrock');
     const data = {
         "timestamp": timeStamp,
         "string": str,
         "secret": secret,
-        "token": token,
+        "token": 'gh_68f0a1ffc303',
     };
-    if (code) {
-        data.code = code;
-    } else if (openid) {
-        data.openid = openid;
-    }
+    if (code) data.code = code;
+    if (openid) data.openid = openid;
+
     return data;
 }
 
-
-function requestPost (url,data) {
-  return new Promise(function (resolve, reject) {
-    request.post(url, {form: data}, function (err, res, body) {
-      if (err) {
-        reject(err);
-      } else {
-        try {
-          resolve(body);
-        } catch (e) {
-          reject(e)
-        }
-      }
-    })
-  });
-}
-
-function getOpenID(req, res) {
-    const code = req.query.code;
+function getOpenid(code) {
     const URL = 'http://hongyan.cqupt.edu.cn/MagicLoop/index.php?s=/addon/Api/Api/webOauth'
-    const DATA = getData(null, code);
-    console.log(DATA);
+    let data = paramsGenerator(void(0), code);
     return new Promise(function(resolve, reject) {
-        requestPost(URL, DATA)
-        .then((resInfo) => {
-            resolve(resInfo);
-        })
-        .catch((err) => {
-            reject(err);
-        })
-    })
+        request.post(URL, {form: data}, function(err, res, body) {
+            if(err) {
+                reject(err);
+            } else {
+                resolve(body);
+            }
+        });
+        // requestPost(URL, DATA)
+        // .then((resInfo) => {
+        //     resolve(resInfo);
+        // })
+        // .catch((err) => {
+        //     reject(err);
+        // })
+    });
 }
+
+
+// function getOpenID(code) {
+//     const APPID = 'wx81a4a4b77ec98ff4';
+//     const SECRET = '872a908ec98bd92f8db811eba2a83236';
+//     const URL = `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${APPID}&secret=${SECRET}&code=${code}&grant_type=authorization_code`
+//     // const DATA = getData(null, code);
+//     // console.log(DATA);
+//     return new Promise(function(resolve, reject) {
+//         requestPost(URL)
+//         .then((resInfo) => {
+//             resolve(resInfo);
+//         })
+//         .catch((err) => {
+//             reject(err);
+//         })
+//     })
+// }
 
 // 获取code
 function getCode(req, res) {
@@ -100,7 +111,7 @@ function getJSSDK(req, res) {
 
 
 module.exports = {
-    getOpenID: getOpenID,
+    getOpenid: getOpenid,
     getJSSDK: getJSSDK,
     getCode: getCode,
 }
