@@ -94,7 +94,7 @@
         $('#submit_btn')
             .on('click', function () {
 
-                $.post('', {
+                $.post('/vote', {
                     warp_1: warp1Arr,
                     warp_2: warp2Arr,
                 }, function (res) {
