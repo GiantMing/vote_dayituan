@@ -55,7 +55,6 @@ function paramsGenerator (openid, code) {
 }
 
 
-
 let WX = {
     getOpenid: function(code) {
         const URL = 'http://hongyan.cqupt.edu.cn/MagicLoop/index.php?s=/addon/Api/Api/webOauth'
@@ -89,7 +88,10 @@ let WX = {
                 if(err) {
                     reject(err);
                 } else {
-                    data.body = body;
+                    data.appid = 'wx81a4a4b77ec98ff4';
+
+                    data.ticket = JSON.parse(body).data;
+                    data.signature = sha1(`jsapi_ticket=${data.ticket}&noncestr=${data.string}&timestamp=${data.timestamp}&url=${'http://' + req.hostname + req.originalUrl}`)
                     resolve(data);
                 }
             })

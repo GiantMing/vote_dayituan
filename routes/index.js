@@ -29,9 +29,9 @@ router.get('/', (req, res, next) => {
                     body = JSON.parse(body);
                     let openid = body.data.openid;
                     req.session.openid = openid;
-                    WX.getTicket()
+                    WX.getTicket(req, res)
                     .then(data=> {
-                        console.log(data);
+                        req.JSSDK = data;
                         next();
                     })
                 } catch (e) {
