@@ -19,14 +19,13 @@ function unique(array){
 
 // 接收投票
 router.post('/', function(req, res, next) {
-    var work_ids = req.body.work_ids;
+    console.log(req.body);
+    var work_ids = req.body['work_ids[]'];
     var openid = req.session.openid;
     var type = req.body.type;
 
-    if(work_ids) work_ids = JSON.parse(work_ids);
-
     var response_info = {};
-    
+    console.log(typeof work_ids);
     if(util.isArray(work_ids) && work_ids.length === 3 && unique(work_ids).length !== 3) {
         response_info = {
             status: 412, // 重复投票
