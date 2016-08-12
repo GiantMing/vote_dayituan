@@ -115,7 +115,7 @@ let WX = {
                     data.appid = 'wx81a4a4b77ec98ff4';
 
                     data.ticket = JSON.parse(body).data;
-                    data.signature = sha1(`jsapi_ticket=${data.ticket}&noncestr=${data.string}&timestamp=${data.timestamp}&url=${'http://' + req.hostname + req.originalUrl}`)
+                    data.signature = sha1(`jsapi_ticket=${data.ticket}&noncestr=${data.string}&timestamp=${data.timestamp}&url=${'https://' + req.hostname + req.originalUrl}`)
                     resolve(data);
                 }
             })
