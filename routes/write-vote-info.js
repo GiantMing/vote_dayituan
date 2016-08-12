@@ -6,7 +6,7 @@ const Work      = require('../models/workModel.js');
 const fs        = require('fs');
 
 
-function writeVoteInfo()  {
+function writeVoteInfo(cb)  {
 
     // 查询作品的这些字段
     Work.findAll({
@@ -45,9 +45,10 @@ function writeVoteInfo()  {
                 song_works: works.filter((work) => work.type === 'song'), 
                 preside_works: works.filter((work) => work.type === 'preside')
             }), 'utf-8');
-        })
+            return true
+        }).then(cb);
     })
 }
-
+writeVoteInfo(()=>{});
 
 module.exports = writeVoteInfo;

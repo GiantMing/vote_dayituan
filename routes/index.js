@@ -13,8 +13,14 @@ const getJSSDK      = WX.getJSSDK;
 const getCode       = WX.getCode;
 
 let data = {};
-if(!fs.existsSync('./routes/data.json')) writeVoteInfo(); 
-data = require('./data.json');
+if(!fs.existsSync('./routes/data.json')) {
+    writeVoteInfo(() => {
+        data = require('./data.json');
+    }); 
+} else {
+    data = require('./data.json');
+}
+
 
 
 
