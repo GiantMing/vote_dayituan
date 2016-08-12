@@ -121,7 +121,7 @@ var type = 'preside';
                     } else {
                         alert('投票失败，请稍后重试');
                     }
-                    window.location.reload();
+                    window.location.href = window.location.href.replace(/\?.+$/, '');
 
                 })
 
