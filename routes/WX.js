@@ -5,6 +5,22 @@ const crypto = require('crypto');
 
 
 
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
 function hash (type) {
     return (str) => {
         let hashObj = crypto.createHash(type);
@@ -54,6 +70,7 @@ function paramsGenerator (openid, code) {
     return data;
 }
 
+var port = normalizePort(process.env.PORT || '3000');
 
 let WX = {
     getOpenid: function(code) {
@@ -70,9 +87,11 @@ let WX = {
         });
     },
 
+
     // 获取code
     getCode: function(req, res) {
-        const REDIRECT_URI = encodeURIComponent('http://' + req.hostname+req.originalUrl);
+        const REDIRECT_URI = encodeURIComponent('http://' + req.hostname+ ':' + port +req.originalUrl);
+        console.log(REDIRECT_URI);
         const APPID = 'wx81a4a4b77ec98ff4';
         const LOCATION = `http://hongyan.cqupt.edu.cn/GetWeixinCode/get-weixin-code.html?appid=${APPID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=snsapi_userinfo&state=fuckweixin#wechat_redirect`;
         res.writeHead(307, {'Location': LOCATION});
