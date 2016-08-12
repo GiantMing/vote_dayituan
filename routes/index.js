@@ -12,14 +12,14 @@ const getOpenid     = WX.getOpenid;
 const getJSSDK      = WX.getJSSDK;
 const getCode       = WX.getCode;
 
-let data = {};
-if(!fs.existsSync('./routes/data.json')) {
-    writeVoteInfo(() => {
-        data = require('./data.json');
-    }); 
-} else {
-    data = require('./data.json');
-}
+// let data = {};
+// if(!fs.existsSync('./routes/data.json')) {
+//     writeVoteInfo(() => {
+//         data = require('./data.json');
+//     }); 
+// } else {
+//     data = require('./data.json');
+// }
 
 
 
@@ -57,12 +57,14 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/', (req, res, next) => {
-    res.render('index', {
-        JSSDK: req.JSSDK,
-        song_works: data.song_works,
-        preside_works: data.preside_works,
-        time: (new Date()).getTime().toString()
-    });
+    writeVoteInfo((data) => {
+        res.render('index', {
+            JSSDK: req.JSSDK,
+            song_works: data.song_works,
+            preside_works: data.preside_works,
+            time: (new Date()).getTime().toString()
+        });
+    })
 });
 
 

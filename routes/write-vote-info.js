@@ -41,11 +41,14 @@ function writeVoteInfo(cb)  {
             return works;
         })
         .then((works) => {
-            fs.writeFile('./routes/data.json', JSON.stringify({
+            // fs.writeFile('./routes/data.json', JSON.stringify({
+            //     song_works: works.filter((work) => work.type === 'song'), 
+            //     preside_works: works.filter((work) => work.type === 'preside')
+            // }), 'utf-8');
+            return {
                 song_works: works.filter((work) => work.type === 'song'), 
                 preside_works: works.filter((work) => work.type === 'preside')
-            }), 'utf-8');
-            return true
+            }
         }).then(cb);
     })
 }
