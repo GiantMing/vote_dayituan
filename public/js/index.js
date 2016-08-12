@@ -103,7 +103,7 @@ var type = 'preside';
                 if (type === 'preside' && warp1Arr.length < 3) {
 
                     return alert('至少投3票');
-                } else if (type === 'song' && warp2Arr.length < 3) {
+                } else if (type === 'song' && warpArr.length < 3) {
 
                     return alert('至少投3票');
                 }
