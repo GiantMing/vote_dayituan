@@ -100,6 +100,14 @@ var type = 'preside';
         $('#submit_btn')
             .on('click', function () {
 
+                if (type === 'preside' && warp1Arr.length < 3) {
+
+                    return alert('至少投3票');
+                } else if (type === 'song' && warp2Arr.length < 3) {
+
+                    return alert('至少投3票');
+                }
+
                 $.post('/vote_dayituan_2016/vote', {
                     type: type,
                     work_ids: type === 'preside' ? warp1Arr : warp2Arr
@@ -107,12 +115,12 @@ var type = 'preside';
 
                     if (res.status == 200) {
                         alert('投票成功');
-                    } else if (res.status == 400) {
-                        alert('投票失败，你今天已投过3次');
+                    } else if (res.status == 403) {
+                        alert('投票失败，你今天已投过');
                     } else {
                         alert('投票失败，请稍后重试');
                     }
-                    window.location.reload();
+                    // window.location.reload();
 
                 })
 
