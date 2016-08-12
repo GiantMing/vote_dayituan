@@ -70,7 +70,13 @@ function paramsGenerator (openid, code) {
     return data;
 }
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = ':' + normalizePort(process.env.PORT || '3000');
+
+if(process.env.NODE_ENV === 'production') {
+    port = '';
+}
+console.log(process.env.DEBUG);
+
 
 let WX = {
     getOpenid: function(code) {
@@ -90,8 +96,7 @@ let WX = {
 
     // 获取code
     getCode: function(req, res) {
-        const REDIRECT_URI = encodeURIComponent('http://' + req.hostname+ ':' + port +req.originalUrl);
-        console.log(REDIRECT_URI);
+        const REDIRECT_URI = encodeURIComponent('http://' + req.hostname+ port +req.originalUrl);
         const APPID = 'wx81a4a4b77ec98ff4';
         const LOCATION = `http://hongyan.cqupt.edu.cn/GetWeixinCode/get-weixin-code.html?appid=${APPID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=snsapi_userinfo&state=fuckweixin#wechat_redirect`;
         res.writeHead(307, {'Location': LOCATION});

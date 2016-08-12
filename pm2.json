@@ -11,7 +11,8 @@
     "args": [],
     "env": {
         "NODE_ENV": "production",
-        "PORT": "10086"
+        "PORT": "10086",
+        "DEBUG": false
     }
   }]
 }
