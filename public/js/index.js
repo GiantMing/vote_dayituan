@@ -1,6 +1,10 @@
+var type = 'preside';
+
 ;(function () {
 
     $('.the_main').on('click', function () {
+
+        type = 'preside';
 
         changeButtonStyle(
             '.the_main', '.person_button',
@@ -10,6 +14,8 @@
     });
 
     $('.person_button').on('click', function () {
+
+        type = 'song';
 
         changeButtonStyle(
             '.person_button', '.the_main',
@@ -94,9 +100,9 @@
         $('#submit_btn')
             .on('click', function () {
 
-                $.post('/vote', {
-                    warp_1: warp1Arr,
-                    warp_2: warp2Arr,
+                $.post('/vote_dayituan_2016/vote', {
+                    type: type,
+                    work_ids: type === 'preside' ? warp1Arr : warp2Arr
                 }, function (res) {
 
                     if (res.status == 200) {
