@@ -1,5 +1,4 @@
 var type = 'preside';
-
 ;(function () {
 
     $('.the_main').on('click', function () {
