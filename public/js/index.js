@@ -112,6 +112,8 @@ var type = 'preside';
                     work_ids: type === 'preside' ? warp1Arr : warp2Arr
                 }, function (res) {
 
+                    res = JSON.parse(res);
+
                     if (res.status == 200) {
                         alert('投票成功');
                     } else if (res.status == 403) {
@@ -119,7 +121,7 @@ var type = 'preside';
                     } else {
                         alert('投票失败，请稍后重试');
                     }
-                    // window.location.reload();
+                    window.location.reload();
 
                 })
 
