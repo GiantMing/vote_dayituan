@@ -12,38 +12,24 @@ const getOpenid     = WX.getOpenid;
 const getJSSDK      = WX.getJSSDK;
 const getCode       = WX.getCode;
 
-// let data = {};
-// if(!fs.existsSync('./routes/data.json')) {
-//     writeVoteInfo(() => {
-//         data = require('./data.json');
-//     }); 
-// } else {
-//     data = require('./data.json');
-// }
-
-
-
-
 router.get('/', (req, res, next) => {
     let code = req.query.code;
     let openid = req.session.openid;
-    if(code) {
+
+    if(!code) {
+        getCode(req, res);
+    } else {
         if(!openid) {
             getOpenid(code)
             .then((body) => {
-                try {
-                    body = JSON.parse(body);
-                    let openid = body.data.openid;
-                    req.session.openid = openid;
-                    WX.getTicket(req, res)
-                    .then(data=> {
-                        req.JSSDK = data;
-                        next();
-                    })
-                } catch (e) {
-                    console.log(e);
-                }
-                
+                body = JSON.parse(body);
+                let openid = body.data.openid;
+                req.session.openid = openid;
+                WX.getTicket(req, res)
+                .then(data => {
+                    req.JSSDK = data;
+                    next();
+                })   
             })
             .catch((err) => {
                 console.log(err);
@@ -51,8 +37,6 @@ router.get('/', (req, res, next) => {
         } else {
             next();
         }
-    } else {
-        getCode(req, res);
     }
 });
 
@@ -66,6 +50,5 @@ router.get('/', (req, res, next) => {
         });
     })
 });
-
 
 module.exports = router;
