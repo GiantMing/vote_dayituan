@@ -70,6 +70,4 @@ app.use(function(err, req, res, next) {
   });
 });
 
-
-
 module.exports = vote_dayituan_2016;

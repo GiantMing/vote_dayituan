@@ -2,53 +2,50 @@
 
 const express       = require('express');
 const getVoteInfo = require('./get_vote_info.js');
+
 const router        = express.Router();
 
 // 微信 api
 const WX            = require('./WX.js');
+const getOpenid     = WX.getOpenid;
+const getJSSDK      = WX.getJSSDK;
+const getCode       = WX.getCode;
 
 
-let code   = '',
+let code = '',
     openid = '';
 
-// 获取 code 和 openid
 router.get('/', (req, res, next) => {
 
-    code = req.query.code;
-    openid = req.session.openid;
+    let code = req.query.code;
+    let openid = req.session.openid;
 
-    next();
-});
-
-// 检查是否有 code
-router.get('/', (req, res, next) => {
     if(!code) {
-        WX.getCode(req, res);
-    } else {
-        next();
-    }
-})
-
-// 获取 openid
-router.get('/', (req, res, next) => {
-    if(!openid) {
-        WX.getOpenid(code)
+        getCode(req, res);
+    } else if(!openid) {
+        getOpenid(code)
         .then((body) => {
             body = JSON.parse(body);
-            req.session.openid = body.data.openid;
-            return WX.getTicket(req, res)
+            let openid = body.data.openid;
+            req.session.openid = openid;
+            WX.getTicket(req, res)
+            .then(data => {
+                req.JSSDK = data;
+                next();
+            })   
         })
-        .then((data) => {
-            req.JSSDK = data;
-            next();
+        .catch((err) => {
+            console.error(err);
         })
-        .catch(e => console.log(e));
     } else {
         next();
     }
-})
+});
 
-// 渲染页面
+
+
+
+
 router.get('/', (req, res, next) => {
     getVoteInfo((voteInfo) => {
         res.render('index', {
