@@ -1,5 +1,5 @@
 'use strict';
-// require('babel-polyfill');
+
 const express       = require('express');
 const fs            = require('fs');
 const session       = require('express-session')
@@ -18,27 +18,29 @@ router.get('/', (req, res, next) => {
 
     if(!code) {
         getCode(req, res);
+    } else if(!openid) {
+        getOpenid(code)
+        .then((body) => {
+            body = JSON.parse(body);
+            let openid = body.data.openid;
+            req.session.openid = openid;
+            WX.getTicket(req, res)
+            .then(data => {
+                req.JSSDK = data;
+                next();
+            })   
+        })
+        .catch((err) => {
+            console.error(err);
+        })
     } else {
-        if(!openid) {
-            getOpenid(code)
-            .then((body) => {
-                body = JSON.parse(body);
-                let openid = body.data.openid;
-                req.session.openid = openid;
-                WX.getTicket(req, res)
-                .then(data => {
-                    req.JSSDK = data;
-                    next();
-                })   
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-        } else {
-            next();
-        }
+        next();
     }
 });
+
+
+
+
 
 router.get('/', (req, res, next) => {
     writeVoteInfo((data) => {

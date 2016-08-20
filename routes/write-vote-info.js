@@ -52,6 +52,5 @@ function writeVoteInfo(cb)  {
         }).then(cb);
     })
 }
-writeVoteInfo(()=>{});
 
 module.exports = writeVoteInfo;

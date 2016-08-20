@@ -19,25 +19,26 @@ function unique(array){
 
 // 接收投票
 router.post('/', function(req, res, next) {
-    console.log(req.body);
+
     var work_ids = req.body['work_ids[]'];
     var openid = req.session.openid;
     var type = req.body.type;
 
     var response_info = {};
-    console.log(typeof work_ids);
+
+
     if(util.isArray(work_ids) && work_ids.length === 3 && unique(work_ids).length !== 3) {
         response_info = {
             status: 412, // 重复投票
             msg: "repeat works",
         };
-        res.send(JSON.stringify(response_info));
+        res.json(response_info);
     } else if(work_ids.length !== 3) {
         response_info = {
             status: 415, // 缺少字段
             msg: 'field is lacking'
         };
-        res.send(JSON.stringify(response_info));
+        res.json(response_info);
     } else if(work_ids.length === 3) {
 
         response_info = {
@@ -50,7 +51,7 @@ router.post('/', function(req, res, next) {
                 status: 415,
                 msg: 'haven\'t openid', 
             };
-            res.send(JSON.stringify(response_info));
+            res.json(response_info);
         } else {
             Vote.findOne({
                 where: {
@@ -74,9 +75,9 @@ router.post('/', function(req, res, next) {
                         }
                     });
                     Vote.bulkCreate(vote_datas);
-                    writeVoteInfo();
+                    // writeVoteInfo();
                 }
-                res.send(JSON.stringify(response_info));
+                res.json(response_info);
             });
         }
     };

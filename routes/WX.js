@@ -75,7 +75,6 @@ var port = ':' + normalizePort(process.env.PORT || '3000');
 if(process.env.NODE_ENV === 'production') {
     port = '';
 }
-console.log(process.env.DEBUG);
 
 
 let WX = {
@@ -129,7 +128,6 @@ let WX = {
         })
         
     }
-    // 
 }
 
 

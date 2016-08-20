@@ -26,7 +26,6 @@ router.post('/', function(req, res, next) {
         college   : college,
         phone     : phone,
         author    : author
-
     };
     
 
@@ -56,7 +55,7 @@ router.post('/', function(req, res, next) {
     if(response_info.status === 200) {
         WorkModel.create(work_info); // 插入数据库
     };
-    res.send(JSON.stringify(response_info));
+    res.json(response_info);
 });
 
 module.exports = router;

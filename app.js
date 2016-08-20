@@ -1,20 +1,25 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+'use strict';
 
-var index = require('./routes/index');
-// var users = require('./routes/users');
-var works = require('./routes/works');
-var vote  = require('./routes/vote');
-
-const session = require('express-session')
+const express = require('express');
+const path = require('path');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const bodyParser = require('body-parser');
 
 
 
-var app = express();
+// routes
+const index = require('./routes/index');
+const work = require('./routes/work');
+const vote  = require('./routes/vote');
+
+// app 做为 vote_dayituan_2016的子路由
+const vote_dayituan_2016 = express();
+const app = express();
+
+// 将 app 挂载到 /vote_dayituan_2016路由下
+vote_dayituan_2016.use('/vote_dayituan_2016', app);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -28,11 +33,10 @@ app.use(session({ secret: 'hello world', cookie: { maxAge: 60000 }}))
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 主页
-
 app.use('/', index);
 
 // 作品 POST 路由
-app.use('/works', works);
+app.use('/work', work);
 
 // 投票
 app.use('/vote', vote);
@@ -66,6 +70,6 @@ app.use(function(err, req, res, next) {
   });
 });
 
-var vote_dayituan_2016 = express();
-vote_dayituan_2016.use('/vote_dayituan_2016', app);
+
+
 module.exports = vote_dayituan_2016;
