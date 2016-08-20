@@ -111,8 +111,9 @@ var type = 'preside';
                     type: type,
                     work_ids: type === 'preside' ? warp1Arr : warp2Arr
                 }, function (res) {
-
-                    res = JSON.parse(res);
+                    
+                    // 原来返回的是字符串,现在改成json, 不用 parse 了
+                    // res = JSON.parse(res);
 
                     if (res.status == 200) {
                         alert('投票成功');
