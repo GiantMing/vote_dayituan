@@ -1,6 +1,5 @@
 'use strict';
 
-
 const express = require('express');
 const validator = require('validator');
 const router = express.Router();
@@ -46,35 +45,20 @@ router.post('/', function(req, res, next) {
         phone     : phone,
         author    : author
     };
-    
-
-
-    let response_info = {};
 
     // 检查参数是否存在
     if(!(work_name && work_link && type && college && phone && author)) {
-        response_info = {
-            status: 415, // 缺少字段
-            msg: 'field is lacking'
-        };
+        res.json(responseInfo[415]);
+    
+    // 参数验证
+    } else if(!(phone.length === 11 && validator.isURL(work_link) && collegeNames.indexOf(college) !== -1 && work_types.indexOf(type) !== -1)){
+        res.json(responseInfo[412])
+
+    // 成功
     } else {
-        // 参数验证
-        if(phone.length === 11 && validator.isURL(work_link) && collegeNames.indexOf(college) !== -1 && work_types.indexOf(type) !== -1) {
-            response_info = {
-                status: 200,  //成功``
-                msg: 'success'
-            };
-        } else {
-            response_info = {
-                status: 412, // 无效参数
-                msg: "invalid parameter",
-            };
-        };
-    };
-    if(response_info.status === 200) {
         WorkModel.create(work_info); // 插入数据库
-    };
-    res.json(response_info);
+        res.json(responseInfo[200]);
+    }
 });
 
 module.exports = router;

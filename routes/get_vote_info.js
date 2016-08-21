@@ -9,6 +9,7 @@ const fs        = require('fs');
 
 function getVoteInfo(cb)  {
     let works = null;
+
     // 查询作品的这些字段
     Work.findAll({
         attributes: [
@@ -20,15 +21,20 @@ function getVoteInfo(cb)  {
             'author'
         ]
     })
+
     .then((workModels) => {
         works =  workModels.map((workModel) => workModel.get());
+        
+        // 查询对应作品投票数
         return Promise.all(works.map((work) => {
+
             return Vote.findAll({
                 attributes: ['work_id', [sequelize.fn('COUNT', sequelize.col('id')), 'vote_num']],
                 where: {
                     work_id: work.id
                 }
             })
+
         }))
     })
     .then((voteModels) => {
