@@ -1,12 +1,12 @@
 'use strict';
 
+// 中间件
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-
 
 
 // routes
@@ -25,11 +25,18 @@ vote_dayituan_2016.use('/vote_dayituan_2016', app);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
+// 配置中间件
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({ secret: 'hello world', cookie: { maxAge: 60000 }}))
+app.use(session({ 
+  secret: 'hello world', 
+  cookie: { maxAge: 60000 },
+  httpOnly: true,
+  resave: true,
+  saveUninitialized: true
+}))
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 主页
@@ -69,5 +76,6 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
 
 module.exports = vote_dayituan_2016;

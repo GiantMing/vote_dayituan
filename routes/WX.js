@@ -3,10 +3,14 @@
 const request = require('request');
 const crypto = require('crypto');
 
+let port = ':' + normalizePort(process.env.PORT || '3000');
 
+if(process.env.NODE_ENV === 'production') {
+    port = '';
+}
 
 function normalizePort(val) {
-  var port = parseInt(val, 10);
+  let port = parseInt(val, 10);
 
   if (isNaN(port)) {
     // named pipe
@@ -70,11 +74,7 @@ function paramsGenerator (openid, code) {
     return data;
 }
 
-var port = ':' + normalizePort(process.env.PORT || '3000');
 
-if(process.env.NODE_ENV === 'production') {
-    port = '';
-}
 
 
 let WX = {
@@ -112,21 +112,12 @@ let WX = {
                     reject(err);
                 } else {
                     data.appid = 'wx81a4a4b77ec98ff4';
-
                     data.ticket = JSON.parse(body).data;
                     data.signature = sha1(`jsapi_ticket=${data.ticket}&noncestr=${data.string}&timestamp=${data.timestamp}&url=${'https://' + req.hostname + req.originalUrl}`)
                     resolve(data);
                 }
             })
         });
-    },
-    JSSDKSignature: function(req) {
-        return new Promise((resolve, reject) => {
-            this.getTicket()
-            .then(resolve)
-            .catch(reject)
-        })
-        
     }
 }
 

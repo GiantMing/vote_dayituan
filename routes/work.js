@@ -1,16 +1,35 @@
-var express = require('express');
-var validator = require('validator');
-var router = express.Router();
-var WorkModel = require('../models/workModel');
+'use strict';
 
 
-var info = require('../config/infos.json');
-var collegeNames = info.colleges;// 学院名
-var work_types = info.work_types;
+const express = require('express');
+const validator = require('validator');
+const router = express.Router();
+const WorkModel = require('../models/workModel');
+
+const info = require('../config/infos.json');
+
+let collegeNames = info.colleges;// 学院名
+let work_types = info.work_types;
+
+
+const responseInfo = {
+    200: {
+        status: 200,
+        msg: 'success'
+    },
+    415: {
+        status: 415, // 缺少字段
+        msg: 'field is lacking'
+    },
+    412: {
+        status: 412, // 无效参数
+        msg: "invalid parameter",
+    }
+}
 
 // 添加作品
 router.post('/', function(req, res, next) {
-    var work_name = req.body.work_name,
+    let work_name = req.body.work_name,
         work_link = req.body.work_link,
         type      = req.body.type,
         pic       = req.body.pic,
@@ -18,7 +37,7 @@ router.post('/', function(req, res, next) {
         phone     = req.body.phone,
         author    = req.body.author;
 
-    var work_info = {
+    let work_info = {
         work_name : work_name,
         work_link : work_link,
         type      : type,
@@ -30,7 +49,7 @@ router.post('/', function(req, res, next) {
     
 
 
-    var response_info = {};
+    let response_info = {};
 
     // 检查参数是否存在
     if(!(work_name && work_link && type && college && phone && author)) {
