@@ -4,11 +4,12 @@ const validator = require('validator'); // 验证
 const sequelize = require('./connect');
 const Work = require('./workModel');
 
+
 const Vote = sequelize.define('vote', {
-    work_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-    },
+    // work_id: {
+    //     type: Sequelize.INTEGER,
+    //     allowNull: false,
+    // },
     openid: {
         type: Sequelize.STRING,
         allowNull: false,    
@@ -17,8 +18,9 @@ const Vote = sequelize.define('vote', {
         type: Sequelize.STRING(10),
         allowNull: false,
     }
+}, {
+    underscored: true
 });
 
-// Vote.sync();
 
 module.exports = Vote;

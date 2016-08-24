@@ -62,8 +62,9 @@ const Work = sequelize.define('work', {
             isEmail: true,
         }
     },
+}, {
+    underscored: true
 });
 
-// Work.sync();//{focus: true});
 
 module.exports = Work;

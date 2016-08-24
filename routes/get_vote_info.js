@@ -1,17 +1,15 @@
 'use strict'
 
 const sequelize = require('sequelize');
-const Vote      = require('../models/voteModel.js');
-const Work      = require('../models/workModel.js');
 const fs        = require('fs');
-
+const M = require('../models/models');
 
 
 function getVoteInfo(cb)  {
     let works = null;
 
     // 查询作品的这些字段
-    Work.findAll({
+    M.Work.findAll({
         attributes: [
             'id', 
             'work_name', 
@@ -21,33 +19,30 @@ function getVoteInfo(cb)  {
             'author'
         ]
     })
-
+    // 查询投票数量
     .then((workModels) => {
         works =  workModels.map((workModel) => workModel.get());
-        
-        // 查询对应作品投票数
-        return Promise.all(works.map((work) => {
-
-            return Vote.findAll({
-                attributes: ['work_id', [sequelize.fn('COUNT', sequelize.col('id')), 'vote_num']],
-                where: {
-                    work_id: work.id
-                }
+        return Promise.all(workModels.map((workModel) => {
+            return workModel.getVotes({
+                attributes: [[sequelize.fn('COUNT', sequelize.col('id')), 'vote_num']]
             })
-
         }))
-    })
+    }) 
+
+    // 获取投票数量
     .then((voteModels) => {
         return voteModels.map((voteModel) => {
             return voteModel[0].get('vote_num');
         });
     })
+    // 的到的投票数据存 work 里面
     .then((voteNums) => {
         voteNums.forEach((voteNum, index) => {
             works[index].vote_num = voteNum;
         });
         return works;
     })
+    // 两种类型进行分类
     .then((works) => {
         return {
             song_works: works.filter((work) => work.type === 'song'), 
