@@ -27,6 +27,7 @@ router.get('/', (req, res, next) => {
     .then((body) => {
         body = JSON.parse(body);
         req.session.openid = body.data.openid;
+        next();
     }).catch(e => console.log(e));
     
 });
@@ -35,22 +36,22 @@ router.get('/', (req, res, next) => {
 // 渲染页面
 router.get('/', (req, res, next) => {
 
-
     WX.getTicket(req, res)
-    .then((data) => {
-        req.JSSDK = data;
-        next();
-    }).catch(e => console.log(e));
-
-
-    getVoteInfo((voteInfo) => {
-        res.render('index', {
-            JSSDK: req.JSSDK,
-            song_works: voteInfo.song_works,
-            preside_works: voteInfo.preside_works,
-            time: (new Date()).getTime().toString()
-        });
+    .then((JSSDK) => {
+        req.session.JSSDK = JSSDK;
+        return true;
     })
+    .then((arg) => {
+            getVoteInfo((voteInfo) => {
+            res.render('index', {
+                JSSDK: req.session.JSSDK,
+                song_works: voteInfo.song_works,
+                preside_works: voteInfo.preside_works,
+                time: (new Date()).getTime().toString()
+            });
+        })
+    })
+    .catch( arg =>console.error(arg))   
 });
 
 module.exports = router;
