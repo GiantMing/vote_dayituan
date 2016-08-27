@@ -8,45 +8,35 @@ const router        = express.Router();
 const WX            = require('./WX.js');
 
 
-let code   = '',
-    openid = '';
-
 // 获取 code 和 openid
 router.get('/', (req, res, next) => {
 
-    code = req.query.code;
-    openid = req.session.openid;
+    let code = req.query.code,
+        openid = req.session.openid;
+    
 
-    next();
+    // 如果有 openid 则直接返回页面    
+    if(openid) {
+        return next();
+    }
+    if(!code) {
+        return WX.getCode(req, res);
+    }
+
+    WX.getOpenid(code)
+    .then((body) => {
+        body = JSON.parse(body);
+        req.session.openid = body.data.openid;
+        return WX.getTicket(req, res)
+    })
+    .then((data) => {
+        req.JSSDK = data;
+        next();
+    })
+    .catch(e => console.log(e));
+
 });
 
-// 检查是否有 code
-router.get('/', (req, res, next) => {
-    if(!code) {
-        WX.getCode(req, res);
-    } else {
-        next();
-    }
-})
-
-// 获取 openid
-router.get('/', (req, res, next) => {
-    if(!openid) {
-        WX.getOpenid(code)
-        .then((body) => {
-            body = JSON.parse(body);
-            req.session.openid = body.data.openid;
-            return WX.getTicket(req, res)
-        })
-        .then((data) => {
-            req.JSSDK = data;
-            next();
-        })
-        .catch(e => console.log(e));
-    } else {
-        next();
-    }
-})
 
 // 渲染页面
 router.get('/', (req, res, next) => {

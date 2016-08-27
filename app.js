@@ -6,7 +6,7 @@ const path = require('path');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 
 
 // routes
@@ -24,16 +24,17 @@ vote_dayituan_2016.use('/vote_dayituan_2016', app);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
+app.disable('x-powered-by');
 
 // 配置中间件
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+// app.use(cookieParser());
 app.use(session({ 
+    name: 'sessionid',
     secret: 'hello world', 
-    cookie: { maxAge: 60000 },
-    httpOnly: true,
+    cookie: { maxAge: 60*10000 },
     resave: true,
     saveUninitialized: true
 }))
