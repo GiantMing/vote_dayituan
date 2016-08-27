@@ -27,19 +27,22 @@ router.get('/', (req, res, next) => {
     .then((body) => {
         body = JSON.parse(body);
         req.session.openid = body.data.openid;
-        return WX.getTicket(req, res)
-    })
-    .then((data) => {
-        req.JSSDK = data;
-        next();
-    })
-    .catch(e => console.log(e));
-
+    }).catch(e => console.log(e));
+    
 });
 
 
 // 渲染页面
 router.get('/', (req, res, next) => {
+
+
+    WX.getTicket(req, res)
+    .then((data) => {
+        req.JSSDK = data;
+        next();
+    }).catch(e => console.log(e));
+
+
     getVoteInfo((voteInfo) => {
         res.render('index', {
             JSSDK: req.JSSDK,
