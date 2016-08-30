@@ -31,6 +31,10 @@ const responseInfo = {
     403: {
         status: 403,
         msg: 'vote already'
+    },
+    500: {
+        status: 500,
+        msg: 'server error'
     }
 }
 
@@ -89,7 +93,7 @@ router.post('/', (req, res, next) => {
         } else {
             next();
         }
-    })
+    });
 });
 
 // 投票成功
@@ -103,13 +107,12 @@ router.post('/', (req, res, next) => {
     });
     Vote.bulkCreate(vote_datas)
     .then((arg) => {
-        console.log(arg);
+        res.json(responseInfo[200]);
     })
     .catch((err) => {
-        console.log(err);
+        res.json(responseInfo[500]);
     });
-    res.json(responseInfo[200]);
-})
+});
 
 
 

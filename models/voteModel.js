@@ -1,3 +1,5 @@
+'use strict';
+
 const Sequelize = require('sequelize');
 const validator = require('validator'); // 验证
 
@@ -6,10 +8,6 @@ const Work = require('./workModel');
 
 
 const Vote = sequelize.define('vote', {
-    // work_id: {
-    //     type: Sequelize.INTEGER,
-    //     allowNull: false,
-    // },
     openid: {
         type: Sequelize.STRING,
         allowNull: false,    
@@ -19,7 +17,7 @@ const Vote = sequelize.define('vote', {
         allowNull: false,
     }
 }, {
-    underscored: true
+    underscored: true 
 });
 
 

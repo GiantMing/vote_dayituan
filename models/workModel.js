@@ -1,9 +1,12 @@
+'use strict';
+
+
 const Sequelize = require('sequelize');
 const validator = require('validator'); // 验证
 
 const sequelize = require('./connect');
 
-const info = require('../config/infos.json')
+const info = require('../config/infos.json');
 
 
 

@@ -1,7 +1,6 @@
 'use strict'
 
 const sequelize = require('sequelize');
-const fs        = require('fs');
 const M = require('../models/models');
 
 
@@ -19,6 +18,8 @@ function getVoteInfo(cb)  {
             'author'
         ]
     })
+
+
     // 查询投票数量
     .then((workModels) => {
         works =  workModels.map((workModel) => workModel.get());
@@ -29,12 +30,14 @@ function getVoteInfo(cb)  {
         }))
     }) 
 
+
     // 获取投票数量
     .then((voteModels) => {
         return voteModels.map((voteModel) => {
             return voteModel[0].get('vote_num');
         });
     })
+
     // 的到的投票数据存 work 里面
     .then((voteNums) => {
         voteNums.forEach((voteNum, index) => {
@@ -42,6 +45,8 @@ function getVoteInfo(cb)  {
         });
         return works;
     })
+
+
     // 两种类型进行分类
     .then((works) => {
         return {

@@ -22,6 +22,7 @@ router.get('/', (req, res, next) => {
     if(!code) {
         return WX.getCode(req, res);
     }
+    
 
     WX.getOpenid(code)
     .then((body) => {
@@ -42,7 +43,7 @@ router.get('/', (req, res, next) => {
         return true;
     })
     .then((arg) => {
-            getVoteInfo((voteInfo) => {
+        getVoteInfo((voteInfo) => {
             res.render('index', {
                 JSSDK: req.session.JSSDK,
                 song_works: voteInfo.song_works,

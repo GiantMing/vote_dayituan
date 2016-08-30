@@ -113,6 +113,7 @@ let WX = {
                 } else {
                     data.appid = 'wx81a4a4b77ec98ff4';
                     data.ticket = JSON.parse(body).data;
+                    console.error(JSON.parse(body));
                     data.signature = sha1(`jsapi_ticket=${data.ticket}&noncestr=${data.string}&timestamp=${data.timestamp}&url=${'https://' + req.hostname + req.originalUrl}`)
                     resolve(data);
                 }

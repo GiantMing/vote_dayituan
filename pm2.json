@@ -3,7 +3,7 @@
     "name": "vote_dayituan_fqm",
     "script": "./bin/www",
     "cwd": "/root/vote_dayituan_2016",
-    "exec_mode": "cluster",
+    "exec_mode": "fork",
     "instances": 1,
     "max_memory_restart": "500M",
     "autorestart": true,
